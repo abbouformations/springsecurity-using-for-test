@@ -35,7 +35,7 @@ public class TestUserRepository {
     static void init() {
         userTest.setUsername("test123");
         userTest.setPassword("P@sw@rd");
-        userTest.setRoles(List.of(new Role("ADMIN")));
+        userTest.setAuthorities(List.of(Role.builder().authority("ADMIN").build()));
     }
 
     @BeforeEach

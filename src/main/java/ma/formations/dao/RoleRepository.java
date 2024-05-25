@@ -1,14 +1,13 @@
 package ma.formations.dao;
 
-import java.util.List;
-
+import ma.formations.service.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import ma.formations.service.model.Role;
+import java.util.List;
 
 public interface RoleRepository extends JpaRepository<Role, Integer> {
-	List<Role> findByRole(String role);
+    List<Role> findByAuthority(String role);
 
-	List<Role> findAll();
+    List<Role> findAll();
 
 }

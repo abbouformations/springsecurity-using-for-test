@@ -1,6 +1,5 @@
 package ma.formations;
 
-import lombok.AllArgsConstructor;
 import ma.formations.domaine.EmpVo;
 import ma.formations.domaine.RoleVo;
 import ma.formations.domaine.UserVo;
@@ -13,11 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Collections;
+import java.util.List;
 
 @SpringBootApplication
-
-@AllArgsConstructor
 public class MainApplication {
 
     public static void main(String[] args) {
@@ -26,35 +23,69 @@ public class MainApplication {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public CommandLineRunner run(IUserService userService, IEmpService empService) throws Exception {
         return args -> {
             userService.cleanDataBase();
-            userService.save(new RoleVo("ADMIN"));
-            userService.save(new RoleVo("CLIENT"));
+            userService.save(RoleVo.builder().authority("ADMIN").build());
+            userService.save(RoleVo.builder().authority("CLIENT").build());
 
             RoleVo roleAdmin = userService.getRoleByName("ADMIN");
             RoleVo roleClient = userService.getRoleByName("CLIENT");
 
-            UserVo admin1 = new UserVo("admin1", "admin1", Collections.singletonList(roleAdmin), true, true, true, true);
-            UserVo admin2 = new UserVo("admin2", "admin2", Collections.singletonList(roleAdmin), true, true, true, true);
-            UserVo client1 = new UserVo("client1", "client1", Collections.singletonList(roleClient), true, true, true, true);
-            UserVo client2 = new UserVo("client2", "client2", Collections.singletonList(roleClient), true, true, true, true);
+            UserVo admin1 = UserVo.builder().
+                    username("admin1").
+                    password("admin1").
+                    accountNonExpired(true).
+                    credentialsNonExpired(true).
+                    accountNonLocked(true).
+                    enabled(true).
+                    authorities(List.of(roleAdmin)).
+                    build();
+
+            UserVo admin2 = UserVo.builder().
+                    username("admin2").
+                    password("admin2").
+                    accountNonExpired(true).
+                    credentialsNonExpired(true).
+                    accountNonLocked(true).
+                    enabled(true).
+                    authorities(List.of(roleAdmin)).
+                    build();
+
+            UserVo client1 = UserVo.builder().
+                    username("client1").
+                    password("client1").
+                    accountNonExpired(true).
+                    credentialsNonExpired(true).
+                    accountNonLocked(true).
+                    enabled(true).
+                    authorities(List.of(roleClient)).
+                    build();
+
+            UserVo client2 = UserVo.builder().
+                    username("client2").
+                    password("client2").
+                    accountNonExpired(true).
+                    credentialsNonExpired(true).
+                    accountNonLocked(true).
+                    enabled(true).
+                    authorities(List.of(roleClient)).
+                    build();
 
             userService.save(admin1);
             userService.save(client1);
             userService.save(client2);
             userService.save(admin2);
 
-            empService.save(new EmpVo("emp1", 10000d, "Fonction1"));
-            empService.save(new EmpVo("emp2", 20000d, "Fonction3"));
-            empService.save(new EmpVo("emp3", 30000d, "Fonction4"));
-            empService.save(new EmpVo("emp4", 40000d, "Fonction5"));
-            empService.save(new EmpVo("emp5", 50000d, "Fonction6"));
+            empService.save(EmpVo.builder().name("emp1").salary(10000d).fonction("Fonction1").build());
+            empService.save(EmpVo.builder().name("emp2").salary(20000d).fonction("Fonction2").build());
+            empService.save(EmpVo.builder().name("emp3").salary(30000d).fonction("Fonction3").build());
+            empService.save(EmpVo.builder().name("emp4").salary(40000d).fonction("Fonction4").build());
+            empService.save(EmpVo.builder().name("emp5").salary(50000d).fonction("Fonction5").build());
 
         };
 

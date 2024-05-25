@@ -53,9 +53,9 @@ public class TestEmployeeController {
     @Test
     void testgetAll() throws Exception {
         List<EmpVo> employees = Arrays.asList(
-                new EmpVo("emp1", 10000d, "Fonction1"),
-                new EmpVo("emp2", 20000d, "Fonction2"),
-                new EmpVo("emp", 30000d, "Fonction3"));
+                EmpVo.builder().name("emp1").fonction("Fonction1").salary(10000d).build(),
+                EmpVo.builder().name("emp2").fonction("Fonction2").salary(20000d).build(),
+                EmpVo.builder().name("emp3.").fonction("Fonction3").salary(30000d).build());
         when(service.getEmployees()).thenReturn(employees);
         mvc.perform(get("/employees").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("emp1"))

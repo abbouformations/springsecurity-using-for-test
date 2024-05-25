@@ -1,7 +1,7 @@
 package ma.formations.controller;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import ma.formations.domaine.RoleVo;
 import ma.formations.domaine.TokenVo;
 import ma.formations.domaine.UserVo;
@@ -21,7 +21,7 @@ import java.util.Collection;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
@@ -54,7 +54,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body("Error: Username is already taken!");
         }
         // par défaut, le client a le rôle CLIENT
-        userVo.getRoles().add(new RoleVo("CLIENT"));
+        userVo.getAuthorities().add(RoleVo.builder().authority("CLIENT").build());
         userService.save(userVo);
         return ResponseEntity.ok("User registered successfully!");
     }
