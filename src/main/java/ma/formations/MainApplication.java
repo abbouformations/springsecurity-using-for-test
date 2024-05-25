@@ -13,15 +13,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @SpringBootApplication
 
 @AllArgsConstructor
 public class MainApplication {
-    private IUserService userService;
-    private IEmpService empService;
 
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
@@ -34,7 +31,7 @@ public class MainApplication {
     }
 
     @Bean
-    public CommandLineRunner run() throws Exception {
+    public CommandLineRunner run(IUserService userService, IEmpService empService) throws Exception {
         return args -> {
             userService.cleanDataBase();
             userService.save(new RoleVo("ADMIN"));
